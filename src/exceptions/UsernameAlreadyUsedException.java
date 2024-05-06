@@ -1,7 +1,7 @@
 package exceptions;
 
 public class UsernameAlreadyUsedException extends Exception {
-  public UsernameAlreadyUsedException(String message) {
-    super(message);
+  public UsernameAlreadyUsedException() {
+    super("Another user already has this username");
   }
 }
