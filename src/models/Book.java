@@ -1,6 +1,7 @@
 package models;
 
 import enums.Genre;
+import exceptions.EntityNotFoundException;
 import java.text.MessageFormat;
 import java.util.ArrayList;
 import java.util.List;
@@ -32,16 +33,19 @@ public class Book {
   }
 
   /**
-   * This method retrieves a list of books that match the search term.
-   * The search term is case-insensitive and matches against the author, title, and genre of the books.
+   * This method retrieves a list of books that match the given search term.
+   * The search term can be part of the author's name, book title, or genre.
+   * The search is case-insensitive.
    *
    * @param searchTerm the term to search for in the books.
    * @return a list of books that match the search term.
+   * @throws EntityNotFoundException if no book with the provided data is found.
    */
-  public static List<Book> getBooks(String searchTerm) {
+  public static List<Book> getBooks(String searchTerm)
+    throws EntityNotFoundException {
     String lowerCasedSearchTerm = searchTerm.toLowerCase();
 
-    return Book.allBooks
+    List<Book> foundBooks = Book.allBooks
       .stream()
       .filter(book ->
         book.author.toLowerCase().contains(lowerCasedSearchTerm) ||
@@ -49,6 +53,14 @@ public class Book {
         book.genre.toString().toLowerCase().contains(lowerCasedSearchTerm)
       )
       .toList();
+
+    if (foundBooks.isEmpty()) {
+      throw new EntityNotFoundException(
+        "No book with the provided data was found"
+      );
+    }
+
+    return foundBooks;
   }
 
   /**
@@ -84,5 +96,17 @@ public class Book {
 
   public String getTitle() {
     return title;
+  }
+
+  public String getIsbn() {
+    return this.isbn;
+  }
+
+  public int getQuantityAvailable() {
+    return this.quantityAvailable;
+  }
+
+  public void setQuantityAvailable(int quantityAvailable) {
+    this.quantityAvailable = quantityAvailable;
   }
 }

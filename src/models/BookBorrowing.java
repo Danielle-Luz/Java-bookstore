@@ -1,9 +1,11 @@
 package models;
 
+import exceptions.EntityNotFoundException;
 import exceptions.LateBorrowingsException;
 import java.text.MessageFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
@@ -15,16 +17,22 @@ public class BookBorrowing {
   private Date devolutionDate;
   private static List<BookBorrowing> allBorrowings = new ArrayList<>();
 
-  public BookBorrowing(
-    Book borrowedBook,
-    User borrower,
-    Date startDate,
-    Date devolutionDate
-  ) {
+  public BookBorrowing(Book borrowedBook, User borrower, Date startDate)
+    throws LateBorrowingsException {
+    BookBorrowing.hasLateBorrowings(borrower);
+
     this.borrowedBook = borrowedBook;
     this.borrower = borrower;
     this.startDate = startDate;
-    this.devolutionDate = devolutionDate;
+    this.borrowedBook.setQuantityAvailable(
+        this.borrowedBook.getQuantityAvailable() - 1
+      );
+
+    Calendar calendar = Calendar.getInstance();
+    int daysUntilDevolution = 14;
+    calendar.setTime(startDate);
+    calendar.add(Calendar.DAY_OF_MONTH, daysUntilDevolution);
+    this.devolutionDate = calendar.getTime();
 
     BookBorrowing.allBorrowings.add(this);
   }
@@ -59,6 +67,30 @@ public class BookBorrowing {
   }
 
   /**
+   * This method retrieves a specific book borrowing record based on the borrowed book's ISBN.
+   *
+   * @param user The user whose borrowings are being searched.
+   * @param isbn The ISBN of the book for which the borrowing record is being retrieved.
+   * @return The BookBorrowing object associated with the given user and book ISBN.
+   *         If no borrowing record is found, null is returned.
+   */
+  public static BookBorrowing getUserBorrowingByBookIsbn(
+    User user,
+    String isbn
+  ) {
+    // Use Stream API to filter the list of borrowings associated with the given user
+    // and find the first borrowing record where the book's ISBN matches the given ISBN (case-insensitive)
+    return BookBorrowing
+      .getUserBorrowings(user)
+      .stream()
+      .filter(bookBorrowing ->
+        bookBorrowing.borrowedBook.getIsbn().equalsIgnoreCase(isbn)
+      )
+      .findFirst()
+      .orElse(null);
+  }
+
+  /**
    * This method is used to check if a user has any late book borrowings.
    * It iterates through the list of all borrowings of the given user and checks if the due date of any borrowing is before the current date.
    * If a late borrowing is found, a LateBorrowingsException is thrown.
@@ -89,17 +121,24 @@ public class BookBorrowing {
    *
    * @param borrowedBook The book that is being returned.
    */
-  public void returnBook(Book borrowedBook) {
+  public void returnBook() throws EntityNotFoundException {
     for (int i = 0; i < BookBorrowing.allBorrowings.size(); i++) {
       boolean isReturnedBook = BookBorrowing.allBorrowings
         .get(i)
-        .borrowedBook.equals(borrowedBook);
+        .borrowedBook.equals(this.borrowedBook);
 
       if (isReturnedBook) {
+        int incrementedBookQuantity =
+          this.borrowedBook.getQuantityAvailable() + 1;
+        this.borrowedBook.setQuantityAvailable(incrementedBookQuantity);
         BookBorrowing.allBorrowings.remove(i);
-        break;
+        return;
       }
     }
+
+    throw new EntityNotFoundException(
+      "The returned book was not found as one of the books the user borrowed"
+    );
   }
 
   /**
@@ -111,8 +150,9 @@ public class BookBorrowing {
     System.out.println("----------------------------------------------------");
     System.out.println(
       MessageFormat.format(
-        "Book: {0}\nBorrower: {1}\nStart Date: {2}\nDue Date: {3}\n",
+        "Book ISBN: {0}\nBook title: {1}\nBorrower: {2}\nStart Date: {3}\nDevolution Date: {4}\n",
         this.borrowedBook.getTitle(),
+        this.borrowedBook.getIsbn(),
         this.borrower.getUsername(),
         dateFormat.format(this.startDate),
         dateFormat.format(this.devolutionDate)

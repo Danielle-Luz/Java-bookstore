@@ -1,6 +1,7 @@
 package models;
 
 import enums.UserType;
+import exceptions.EntityNotFoundException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -37,17 +38,27 @@ public class User {
   }
 
   /**
-   * This method retrieves a User object based on the provided username.
+   * This method retrieves a user based on their username.
    *
    * @param username The username of the user to be retrieved.
-   * @return The User object if a user with the given username exists in the system, otherwise null.
+   * @return The User object if a user with the given username is found, otherwise throws an EntityNotFoundException.
+   * @throws EntityNotFoundException If no user is found with the given username.
    */
-  public static User getUserByUsername(String username) {
-    return User.allUsers
+  public static User getUserByUsername(String username)
+    throws EntityNotFoundException {
+    User foundUser = User.allUsers
       .stream()
       .filter(user -> user.username.equals(username))
       .findFirst()
       .orElse(null);
+
+    if (foundUser == null) {
+      throw new EntityNotFoundException(
+        "No user found with username: " + username
+      );
+    }
+
+    return foundUser;
   }
 
   public String getUsername() {
