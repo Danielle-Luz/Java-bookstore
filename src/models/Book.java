@@ -32,37 +32,37 @@ public class Book {
   }
 
   /**
- * This method retrieves a list of books that match the search term.
- * The search term is case-insensitive and matches against the author, title, and genre of the books.
- *
- * @param searchTerm the term to search for in the books.
- * @return a list of books that match the search term.
- */
-public static List<Book> getBooks(String searchTerm) {
+   * This method retrieves a list of books that match the search term.
+   * The search term is case-insensitive and matches against the author, title, and genre of the books.
+   *
+   * @param searchTerm the term to search for in the books.
+   * @return a list of books that match the search term.
+   */
+  public static List<Book> getBooks(String searchTerm) {
     String lowerCasedSearchTerm = searchTerm.toLowerCase();
 
     return Book.allBooks
-     .stream()
-     .filter(book ->
+      .stream()
+      .filter(book ->
         book.author.toLowerCase().contains(lowerCasedSearchTerm) ||
         book.title.toLowerCase().contains(lowerCasedSearchTerm) ||
         book.genre.toString().toLowerCase().contains(lowerCasedSearchTerm)
       )
-     .toList();
-}
+      .toList();
+  }
 
   /**
- * This method retrieves a list of all available books.
- * An available book is one that has a quantity greater than 0.
- *
- * @return a list of available books.
- */
-public static List<Book> getAvailableBooks() {
+   * This method retrieves a list of all available books.
+   * An available book is one that has a quantity greater than 0.
+   *
+   * @return a list of available books.
+   */
+  public static List<Book> getAvailableBooks() {
     return Book.allBooks
-     .stream()
-     .filter(book -> book.quantityAvailable > 0)
-     .toList();
-}
+      .stream()
+      .filter(book -> book.quantityAvailable > 0)
+      .toList();
+  }
 
   /**
    * This method displays information about a book in a formatted manner.
