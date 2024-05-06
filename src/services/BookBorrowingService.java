@@ -1,5 +1,7 @@
 package services;
 
+import exceptions.EntityNotFoundException;
+import exceptions.LateBorrowingsException;
 import java.util.Date;
 import java.util.List;
 import models.Book;
@@ -8,6 +10,13 @@ import models.User;
 
 public class BookBorrowingService {
 
+  /**
+   * This method handles the process of borrowing a book.
+   * It displays all available books to the user, prompts for the ISBN and username of the borrower,
+   * creates a new BookBorrowing object, and updates the book's status to borrowed.
+   * If any exceptions occur during the process, it catches them and prompts the user to try again.
+   * The method also provides an option for the user to go back to the previous screen.
+   */
   public static void borrowBook() {
     System.out.println("All the books available to borrow:");
     Book.getAvailableBooks().forEach(Book::displayInfo);
@@ -29,7 +38,7 @@ public class BookBorrowingService {
         new BookBorrowing(borrowedBook, borrower, new Date());
         System.out.println("The book was successfully borrowed!");
         break;
-      } catch (Exception e) {
+      } catch (EntityNotFoundException | LateBorrowingsException e) {
         System.out.println(e.getMessage());
 
         System.out.println(
@@ -42,6 +51,13 @@ public class BookBorrowingService {
     }
   }
 
+  /**
+   * This method handles the process of returning a borrowed book.
+   * It prompts the user to enter the username of the borrower and the ISBN of the book to be returned.
+   * It then retrieves the corresponding BookBorrowing object and calls the returnBook method on it.
+   * If any exceptions occur during the process, it catches them and prompts the user to try again.
+   * The method also provides an option for the user to go back to the previous screen.
+   */
   public static void returnBook() {
     while (true) {
       try {
@@ -50,29 +66,29 @@ public class BookBorrowingService {
         );
         String username = System.console().readLine();
         User borrower = User.getUserByUsername(username);
-  
+
         List<BookBorrowing> userBorrowings = BookBorrowing.getUserBorrowings(
           borrower
         );
         System.out.println("Books that the user can return:");
         userBorrowings.forEach(BookBorrowing::displayInfo);
-  
+
         System.out.print(
           "Type the ISBN of the book that is going to be returned: "
         );
         String isbn = System.console().readLine();
-  
+
         BookBorrowing returnedBorrowing = BookBorrowing.getUserBorrowingByBookIsbn(
           borrower,
           isbn
         );
 
         returnedBorrowing.returnBook();
-  
+
         System.out.println("The book was successfully returned!");
-        
+
         return;
-      } catch (Exception e) {
+      } catch (EntityNotFoundException e) {
         System.out.println(e.getMessage());
 
         System.out.println(
@@ -80,7 +96,7 @@ public class BookBorrowingService {
         );
 
         String typedChoice = System.console().readLine();
-  
+
         if (typedChoice.equalsIgnoreCase("yes")) return;
       }
     }
