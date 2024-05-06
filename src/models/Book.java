@@ -81,4 +81,8 @@ public static List<Book> getAvailableBooks() {
     );
     System.out.println("----------------------------------------------------");
   }
+
+  public String getTitle() {
+    return title;
+  }
 }
