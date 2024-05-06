@@ -1,5 +1,6 @@
 package models;
 
+import exceptions.LateBorrowingsException;
 import java.text.MessageFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -58,18 +59,27 @@ public class BookBorrowing {
   }
 
   /**
-   * This method checks if a user has any late borrowings.
+   * This method is used to check if a user has any late book borrowings.
+   * It iterates through the list of all borrowings of the given user and checks if the due date of any borrowing is before the current date.
+   * If a late borrowing is found, a LateBorrowingsException is thrown.
    *
    * @param user The user whose borrowings are being checked.
    * @return True if the user has any late borrowings, false otherwise.
+   * @throws LateBorrowingsException If a late borrowing is found.
    */
-  public static boolean hasLateBorrowings(User user) {
-    // Use Stream API to filter borrowings of the given user and check if any of them are late
-    return BookBorrowing
+  public static boolean hasLateBorrowings(User user)
+    throws LateBorrowingsException {
+    boolean hasLateBorrowings = BookBorrowing
       .getUserBorrowings(user)
       .stream()
       .anyMatch(bookBorrowing -> bookBorrowing.devolutionDate.before(new Date())
       );
+
+    if (hasLateBorrowings) {
+      throw new LateBorrowingsException();
+    }
+
+    return hasLateBorrowings;
   }
 
   /**
