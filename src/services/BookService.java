@@ -13,7 +13,7 @@ public class BookService {
    *
    * @throws NumberFormatException If the user enters a non-numeric value when selecting an option.
    */
-  public static void showBookOptions() {
+  public static void showOptions() {
     while (true) {
       System.out.println("Choose an option:");
       System.out.println("1 - Create a book");
@@ -22,7 +22,12 @@ public class BookService {
       System.out.println("4 - Exit");
 
       try {
-        switch (Integer.parseInt(System.console().readLine())) {
+        int optionChosen = Integer.parseInt(System.console().readLine());
+        System.out.println(
+          "----------------------------------------------------"
+        );
+
+        switch (optionChosen) {
           case 1:
             createBook();
             break;
@@ -32,13 +37,14 @@ public class BookService {
           case 3:
             showAllAvailableBooks();
             break;
-          default:
-            break;
         }
 
         break;
       } catch (NumberFormatException e) {
         System.out.println("You need to type a number value");
+        System.out.println(
+          "----------------------------------------------------"
+        );
       }
     }
   }

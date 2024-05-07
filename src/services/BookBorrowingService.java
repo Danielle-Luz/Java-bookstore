@@ -10,6 +10,37 @@ import models.User;
 
 public class BookBorrowingService {
 
+  public static void showOptions() {
+    while (true) {
+      System.out.println("Choose a option:");
+      System.out.println("1 - Borrow a book");
+      System.out.println("2 - Return a book");
+      System.out.println("3- Exit");
+      try {
+        int optionChosen = Integer.parseInt(System.console().readLine());
+        System.out.println(
+          "----------------------------------------------------"
+        );
+
+        switch (optionChosen) {
+          case 1:
+            borrowBook();
+            break;
+          case 2:
+            returnBook();
+            break;
+        }
+
+        break;
+      } catch (Exception e) {
+        System.out.println("You need to type a number value");
+        System.out.println(
+          "----------------------------------------------------"
+        );
+      }
+    }
+  }
+
   /**
    * This method handles the process of borrowing a book.
    * It displays all available books to the user, prompts for the ISBN and username of the borrower,
