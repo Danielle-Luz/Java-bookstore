@@ -6,6 +6,13 @@ import models.Book;
 
 public class BookService {
 
+  /**
+   * This method displays a menu for the user to choose an option for managing books.
+   * It continuously prompts the user for input until a valid option is selected.
+   * The options include creating a book, showing all books, showing only available books, and exiting the program.
+   *
+   * @throws NumberFormatException If the user enters a non-numeric value when selecting an option.
+   */
   public static void showBookOptions() {
     while (true) {
       System.out.println("Choose an option:");
@@ -30,12 +37,18 @@ public class BookService {
         }
 
         break;
-      } catch (Exception e) {
+      } catch (NumberFormatException e) {
         System.out.println("You need to type a number value");
       }
     }
   }
 
+  /**
+   * This method creates a new book and adds it to the list of books.
+   * It continuously prompts the user for input until valid data is entered.
+   *
+   * @throws Exception If any error occurs during the process of creating a book.
+   */
   public static void createBook() {
     while (true) {
       try {
@@ -53,16 +66,23 @@ public class BookService {
         System.out.print("Type the book's quantity available: ");
         int quantityAvailable = Integer.parseInt(System.console().readLine());
 
+        // Create a new book with the provided data
         new Book(bookGenre, isbn, title, author, quantityAvailable);
 
         System.out.println("The book was successfully created!");
         break;
       } catch (Exception e) {
-        System.out.println("You've typed a invalid value");
+        System.out.println("You've typed an invalid value. Please try again.");
       }
     }
   }
 
+  /**
+   * This method is used to choose a genre for a book from the available options.
+   * It continuously prompts the user to select a genre until a valid option is chosen.
+   *
+   * @return The chosen genre.
+   */
   public static Genre chooseBookGenre() {
     Genre[] bookGenres = Genre.values();
     int genreIndex;
@@ -87,10 +107,16 @@ public class BookService {
     return bookGenres[genreIndex];
   }
 
+  /**
+   * This method is used to display a list of books that match the search term.
+   * The search term can be the title, genre, or author of the book.
+   * If no books are found that match the search term, an appropriate message is displayed.
+   */
   public static void showSearchedBooks() {
     System.out.print(
       "Type the title, genre or author of the book(s) you are searching: "
     );
+
     String searchTerm = System.console().readLine();
 
     try {
@@ -101,6 +127,11 @@ public class BookService {
     }
   }
 
+  /**
+   * This method is used to display a list of all available books.
+   * It retrieves the list of available books from the Book model and then displays their information.
+   * If no available books are found, an appropriate message is displayed.
+   */
   public static void showAllAvailableBooks() {
     List<Book> availableBooks = Book.getAvailableBooks();
     availableBooks.forEach(Book::displayInfo);
