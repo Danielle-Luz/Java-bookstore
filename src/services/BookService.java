@@ -10,8 +10,6 @@ public class BookService {
    * This method displays a menu for the user to choose an option for managing books.
    * It continuously prompts the user for input until a valid option is selected.
    * The options include creating a book, showing all books, showing only available books, and exiting the program.
-   *
-   * @throws NumberFormatException If the user enters a non-numeric value when selecting an option.
    */
   public static void showOptions() {
     while (true) {

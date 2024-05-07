@@ -10,6 +10,12 @@ import models.User;
 
 public class BookBorrowingService {
 
+  /**
+   * This method displays a menu with options for the user to choose from.
+   * It handles the user's input and calls the corresponding methods based on the chosen option.
+   * The method continues to display the menu until the user chooses to exit.
+   * If the user enters an invalid option, it prompts them to enter a valid number.
+   */
   public static void showOptions() {
     while (true) {
       System.out.println("Choose a option:");
@@ -32,7 +38,7 @@ public class BookBorrowingService {
         }
 
         break;
-      } catch (Exception e) {
+      } catch (NumberFormatException e) {
         System.out.println("You need to type a number value");
         System.out.println(
           "----------------------------------------------------"
