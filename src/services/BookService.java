@@ -32,17 +32,12 @@ public class BookService {
         );
 
         switch (optionChosen) {
-          case 1:
-            if (loggedUser.getType() == UserType.EMPLOYEE) {
-              createBook();
-            }
-            break;
-          case 2:
-            showSearchedBooks();
-            break;
-          case 3:
-            showAllAvailableBooks();
-            break;
+          case 1 -> {
+              if (loggedUser.getType() == UserType.EMPLOYEE) {
+                  createBook();
+              } }
+          case 2 -> showSearchedBooks();
+          case 3 -> showAllAvailableBooks();
         }
 
         break;

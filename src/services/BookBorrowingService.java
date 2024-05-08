@@ -29,12 +29,8 @@ public class BookBorrowingService {
         );
 
         switch (optionChosen) {
-          case 1:
-            borrowBook();
-            break;
-          case 2:
-            returnBook();
-            break;
+          case 1 -> borrowBook();
+          case 2 -> returnBook();
         }
 
         break;
