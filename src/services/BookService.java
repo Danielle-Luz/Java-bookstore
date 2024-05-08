@@ -98,7 +98,15 @@ public class BookService {
         System.out.println(i + " - " + bookGenres[i].toString());
       }
 
-      genreIndex = Integer.parseInt(System.console().readLine());
+      try {
+        genreIndex = Integer.parseInt(System.console().readLine());
+      } catch (Exception e) {
+        System.out.println("You need to type a number value");
+        System.out.println(
+          "----------------------------------------------------"
+        );
+        continue;
+      }
 
       if (genreIndex < 0 && genreIndex >= bookGenres.length) {
         System.out.println("Choose a value between 0 and " + bookGenres.length);

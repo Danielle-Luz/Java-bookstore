@@ -33,8 +33,54 @@ public class UserService {
 
     System.out.print("Type the password: ");
     String password = System.console().readLine();
+    
+    UserType userType = chooseUserType();
 
-    // Create a new User object with the provided username, password, and UserType.CUSTOMER
-    new User(username, password, UserType.CUSTOMER);
+    new User(username, password, userType);
+  }
+
+  /**
+   * This method is responsible for allowing the user to choose a user type.
+   * It displays a list of available user types and prompts the user to select one.
+   * The user's selection is validated to ensure it is a valid index within the user types array.
+   *
+   * @return The selected UserType.
+   */
+  private static UserType chooseUserType() {
+    UserType[] userTypes = UserType.values();
+
+    // Loop until a valid user type is selected
+    while (true) {
+      int userTypeIndex;
+
+      // Display the list of available user types
+      System.out.println("Select the user's type:");
+      for (int i = 0; i < userTypes.length; i++) {
+        System.out.println(i + " - " + userTypes[i].toString());
+      }
+
+      try {
+        userTypeIndex = Integer.parseInt(System.console().readLine());
+      } catch (Exception e) {
+        // If the input is not a valid integer, display an error message and continue the loop
+        System.out.println("You need to type a number value");
+        System.out.println(
+          "----------------------------------------------------"
+        );
+        continue;
+      }
+
+      if (userTypeIndex < 0 || userTypeIndex >= userTypes.length) {
+        // If the selection is not a valid index, display an error message and continue the loop
+        System.out.println("You need to select a valid index");
+        System.out.println(
+          "----------------------------------------------------"
+        );
+        continue;
+      }
+
+      // If the selection is valid, return the corresponding UserType
+      return userTypes[userTypeIndex];
+    }
   }
 }
