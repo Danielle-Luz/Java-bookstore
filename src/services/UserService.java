@@ -6,6 +6,36 @@ import models.User;
 public class UserService {
 
   /**
+   * This method is responsible for handling the login process in the system.
+   * It prompts the user to enter a username and password, and checks if the provided credentials match an existing user.
+   * If the credentials are valid, it returns the corresponding User object.
+   * If the credentials are invalid, it displays an error message and prompts the user to enter new credentials.
+   *
+   * @return The User object corresponding to the logged-in user.
+   */
+  public static User login() {
+    while (true) {
+      System.out.print("Type your username: ");
+      String username = System.console().readLine();
+
+      System.out.print("Type your password: ");
+      String password = System.console().readLine();
+
+      User loggedUser = User.login(username, password);
+
+      if (loggedUser == null) {
+        System.out.println(
+          "No existent user with the provided username and password was found"
+        );
+        continue;
+      }
+
+      System.out.println("Login successful!");
+      return loggedUser;
+    }
+  }
+
+  /**
    * This method is responsible for creating a new user in the system.
    * It prompts the user to enter a username and password, and checks if the username already exists.
    * If the username already exists, it displays an error message and prompts the user to enter a new username.
@@ -33,7 +63,7 @@ public class UserService {
 
     System.out.print("Type the password: ");
     String password = System.console().readLine();
-    
+
     UserType userType = chooseUserType();
 
     new User(username, password, userType);
