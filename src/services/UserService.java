@@ -4,6 +4,7 @@ import enums.UserType;
 import models.User;
 
 public class UserService {
+
   /**
    * This method is responsible for handling the login process in the system.
    * It prompts the user to enter a username and password, and checks if the provided credentials match an existing user.
@@ -24,12 +25,19 @@ public class UserService {
 
       if (loggedUser == null) {
         System.out.println(
-          "No existent user with the provided username and password was found"
+          "\nNo existent user with the provided username and password was found"
+        );
+        System.out.println(
+          "----------------------------------------------------"
         );
         continue;
       }
 
-      System.out.println("Login successful!");
+      System.out.println("\nLogin successful!");
+      System.out.println(
+        "----------------------------------------------------"
+      );
+
       return loggedUser;
     }
   }
@@ -43,6 +51,10 @@ public class UserService {
   public static void createUser() {
     String username = "";
 
+    System.out.println(
+      "\n----------------------------------------------------"
+    );
+
     // Loop until a unique username is entered
     while (true) {
       try {
@@ -52,7 +64,10 @@ public class UserService {
         // Check if the username already exists
         User.getUserByUsername(username);
         // If no exception was thrown, the username already exists
-        System.out.println("A user with this username already exists.");
+        System.out.println("\nA user with this username already exists.");
+        System.out.println(
+          "----------------------------------------------------"
+        );
       } catch (Exception e) {
         // If an exception was thrown, the username does not exist
         // The user can continue with the registration
@@ -92,7 +107,7 @@ public class UserService {
         userTypeIndex = Integer.parseInt(System.console().readLine());
       } catch (Exception e) {
         // If the input is not a valid integer, display an error message and continue the loop
-        System.out.println("You need to type a number value");
+        System.out.println("\nYou need to type a number value");
         System.out.println(
           "----------------------------------------------------"
         );
@@ -101,7 +116,7 @@ public class UserService {
 
       if (userTypeIndex < 0 || userTypeIndex >= userTypes.length) {
         // If the selection is not a valid index, display an error message and continue the loop
-        System.out.println("You need to select a valid index");
+        System.out.println("\nYou need to select a valid index");
         System.out.println(
           "----------------------------------------------------"
         );

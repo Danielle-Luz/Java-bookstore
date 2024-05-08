@@ -3,6 +3,7 @@ package models;
 import enums.UserType;
 import exceptions.EntityNotFoundException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 public class User {
@@ -10,7 +11,15 @@ public class User {
   private String username;
   private String password;
   private UserType type;
-  private static List<User> allUsers = new ArrayList<>();
+  private static List<User> allUsers = new ArrayList<User>(
+    Arrays.asList(new User("admin", "admin"))
+  );
+
+  public User(String username, String password) {
+    this.username = username;
+    this.password = password;
+    this.type = UserType.EMPLOYEE;
+  }
 
   public User(String username, String password, UserType type) {
     this.username = username;
@@ -54,7 +63,7 @@ public class User {
 
     if (foundUser == null) {
       throw new EntityNotFoundException(
-        "No user found with username: " + username
+        "\nNo user found with username: " + username
       );
     }
 

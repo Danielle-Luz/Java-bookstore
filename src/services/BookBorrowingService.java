@@ -18,6 +18,9 @@ public class BookBorrowingService {
    */
   public static void showOptions() {
     while (true) {
+      System.out.println(
+        "\n----------------------------------------------------"
+      );
       System.out.println("Choose a option:");
       System.out.println("1 - Borrow a book");
       System.out.println("2 - Return a book");
@@ -35,7 +38,7 @@ public class BookBorrowingService {
 
         break;
       } catch (NumberFormatException e) {
-        System.out.println("You need to type a number value");
+        System.out.println("\nYou need to type a number value");
         System.out.println(
           "----------------------------------------------------"
         );
@@ -69,17 +72,21 @@ public class BookBorrowingService {
         User borrower = User.getUserByUsername(username);
 
         new BookBorrowing(borrowedBook, borrower, new Date());
-        System.out.println("The book was successfully borrowed!");
+        System.out.println("\nThe book was successfully borrowed!");
         break;
       } catch (EntityNotFoundException | LateBorrowingsException e) {
-        System.out.println(e.getMessage());
+        System.err.println(e.getMessage());
 
         System.out.println(
-          "You are going to type the ISBN of the book and the name of the user again, do you want to go back to the previous screen?"
+          "\nYou are going to type the ISBN of the book and the name of the user again, do you want to go back to the previous screen?"
         );
 
         String typedChoice = System.console().readLine();
         if (typedChoice.equalsIgnoreCase("yes")) break;
+      } finally {
+        System.out.println(
+          "----------------------------------------------------"
+        );
       }
     }
   }
@@ -103,7 +110,11 @@ public class BookBorrowingService {
         List<BookBorrowing> userBorrowings = BookBorrowing.getUserBorrowings(
           borrower
         );
-        System.out.println("Books that the user can return:");
+
+        System.out.println(
+          "----------------------------------------------------"
+        );
+        System.out.println("\nBooks that the user can return:");
         userBorrowings.forEach(BookBorrowing::displayInfo);
 
         System.out.print(
@@ -118,19 +129,23 @@ public class BookBorrowingService {
 
         returnedBorrowing.returnBook();
 
-        System.out.println("The book was successfully returned!");
+        System.out.println("\nThe book was successfully returned!");
 
         return;
       } catch (EntityNotFoundException e) {
         System.out.println(e.getMessage());
 
         System.out.println(
-          "You are going to type the ISBN of the book and the name of the user again, do you want to go back to the previous screen?"
+          "\nYou are going to type the ISBN of the book and the name of the user again, do you want to go back to the previous screen?"
         );
 
         String typedChoice = System.console().readLine();
 
         if (typedChoice.equalsIgnoreCase("yes")) return;
+      } finally {
+        System.out.println(
+          "----------------------------------------------------"
+        );
       }
     }
   }

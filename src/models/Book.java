@@ -49,6 +49,7 @@ public class Book {
       .stream()
       .filter(book ->
         book.author.toLowerCase().contains(lowerCasedSearchTerm) ||
+        book.isbn.toLowerCase().equals(lowerCasedSearchTerm) ||
         book.title.toLowerCase().contains(lowerCasedSearchTerm) ||
         book.genre.toString().toLowerCase().contains(lowerCasedSearchTerm)
       )
@@ -56,7 +57,7 @@ public class Book {
 
     if (foundBooks.isEmpty()) {
       throw new EntityNotFoundException(
-        "No book with the provided data was found"
+        "\nNo book with the provided data was found"
       );
     }
 

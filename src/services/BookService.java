@@ -15,6 +15,9 @@ public class BookService {
    */
   public static void showOptions(User loggedUser) {
     while (true) {
+      System.out.println(
+        "\n----------------------------------------------------"
+      );
       System.out.println("Choose an option:");
 
       if (loggedUser.getType() == UserType.EMPLOYEE) {
@@ -33,16 +36,17 @@ public class BookService {
 
         switch (optionChosen) {
           case 1 -> {
-              if (loggedUser.getType() == UserType.EMPLOYEE) {
-                  createBook();
-              } }
+            if (loggedUser.getType() == UserType.EMPLOYEE) {
+              createBook();
+            }
+          }
           case 2 -> showSearchedBooks();
           case 3 -> showAllAvailableBooks();
         }
 
         break;
       } catch (NumberFormatException e) {
-        System.out.println("You need to type a number value");
+        System.out.println("\nYou need to type a number value");
         System.out.println(
           "----------------------------------------------------"
         );
@@ -62,7 +66,7 @@ public class BookService {
         System.out.print("Type the ISBN of the book: ");
         String isbn = System.console().readLine();
 
-        System.out.print("Type the title of the book:");
+        System.out.print("Type the title of the book: ");
         String title = System.console().readLine();
 
         Genre bookGenre = chooseBookGenre();
@@ -76,10 +80,17 @@ public class BookService {
         // Create a new book with the provided data
         new Book(bookGenre, isbn, title, author, quantityAvailable);
 
-        System.out.println("The book was successfully created!");
+        System.out.println("\nThe book was successfully created!");
+
         break;
       } catch (Exception e) {
-        System.out.println("You've typed an invalid value. Please try again.");
+        System.out.println(
+          "\nYou've typed an invalid value. Please try again."
+        );
+      } finally {
+        System.out.println(
+          "----------------------------------------------------"
+        );
       }
     }
   }
@@ -104,7 +115,7 @@ public class BookService {
       try {
         genreIndex = Integer.parseInt(System.console().readLine());
       } catch (Exception e) {
-        System.out.println("You need to type a number value");
+        System.out.println("\nYou need to type a number value");
         System.out.println(
           "----------------------------------------------------"
         );
@@ -112,7 +123,12 @@ public class BookService {
       }
 
       if (genreIndex < 0 && genreIndex >= bookGenres.length) {
-        System.out.println("Choose a value between 0 and " + bookGenres.length);
+        System.out.println(
+          "\nChoose a value between 0 and " + bookGenres.length
+        );
+        System.out.println(
+          "----------------------------------------------------"
+        );
         continue;
       }
 
@@ -138,7 +154,10 @@ public class BookService {
       List<Book> foundBooks = Book.getBooks(searchTerm);
       foundBooks.forEach(Book::displayInfo);
     } catch (Exception e) {
-      System.out.println("No book compatible with the search term was found");
+      System.out.println("\nNo book compatible with the search term was found");
+      System.out.println(
+        "----------------------------------------------------"
+      );
     }
   }
 
@@ -150,5 +169,9 @@ public class BookService {
   private static void showAllAvailableBooks() {
     List<Book> availableBooks = Book.getAvailableBooks();
     availableBooks.forEach(Book::displayInfo);
+
+    if (availableBooks.size() == 0) {
+      System.out.println("No available book was found");
+    }
   }
 }

@@ -77,10 +77,10 @@ public class BookBorrowing {
   public static BookBorrowing getUserBorrowingByBookIsbn(
     User user,
     String isbn
-  ) {
+  ) throws EntityNotFoundException {
     // Use Stream API to filter the list of borrowings associated with the given user
     // and find the first borrowing record where the book's ISBN matches the given ISBN (case-insensitive)
-    return BookBorrowing
+    BookBorrowing borrowing = BookBorrowing
       .getUserBorrowings(user)
       .stream()
       .filter(bookBorrowing ->
@@ -88,6 +88,18 @@ public class BookBorrowing {
       )
       .findFirst()
       .orElse(null);
+
+    if (borrowing == null) {
+      throw new EntityNotFoundException(
+        MessageFormat.format(
+          "No borrowing record found for user {0} and ISBN {1}.",
+          user.getUsername(),
+          isbn
+        )
+      );
+    }
+
+    return borrowing;
   }
 
   /**
