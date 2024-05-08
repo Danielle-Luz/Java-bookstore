@@ -4,7 +4,6 @@ import enums.UserType;
 import models.User;
 
 public class UserService {
-
   /**
    * This method is responsible for handling the login process in the system.
    * It prompts the user to enter a username and password, and checks if the provided credentials match an existing user.

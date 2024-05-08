@@ -54,7 +54,7 @@ public class BookBorrowingService {
    * If any exceptions occur during the process, it catches them and prompts the user to try again.
    * The method also provides an option for the user to go back to the previous screen.
    */
-  public static void borrowBook() {
+  private static void borrowBook() {
     System.out.println("All the books available to borrow:");
     Book.getAvailableBooks().forEach(Book::displayInfo);
 
@@ -95,7 +95,7 @@ public class BookBorrowingService {
    * If any exceptions occur during the process, it catches them and prompts the user to try again.
    * The method also provides an option for the user to go back to the previous screen.
    */
-  public static void returnBook() {
+  private static void returnBook() {
     while (true) {
       try {
         System.out.print(

@@ -53,7 +53,7 @@ public class BookService {
    *
    * @throws Exception If any error occurs during the process of creating a book.
    */
-  public static void createBook() {
+  private static void createBook() {
     while (true) {
       try {
         System.out.print("Type the ISBN of the book: ");
@@ -87,7 +87,7 @@ public class BookService {
    *
    * @return The chosen genre.
    */
-  public static Genre chooseBookGenre() {
+  private static Genre chooseBookGenre() {
     Genre[] bookGenres = Genre.values();
     int genreIndex;
 
@@ -124,7 +124,7 @@ public class BookService {
    * The search term can be the title, genre, or author of the book.
    * If no books are found that match the search term, an appropriate message is displayed.
    */
-  public static void showSearchedBooks() {
+  private static void showSearchedBooks() {
     System.out.print(
       "Type the title, genre or author of the book(s) you are searching: "
     );
@@ -144,7 +144,7 @@ public class BookService {
    * It retrieves the list of available books from the Book model and then displays their information.
    * If no available books are found, an appropriate message is displayed.
    */
-  public static void showAllAvailableBooks() {
+  private static void showAllAvailableBooks() {
     List<Book> availableBooks = Book.getAvailableBooks();
     availableBooks.forEach(Book::displayInfo);
   }
