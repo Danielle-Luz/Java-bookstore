@@ -1,8 +1,10 @@
 package services;
 
 import enums.Genre;
+import enums.UserType;
 import java.util.List;
 import models.Book;
+import models.User;
 
 public class BookService {
 
@@ -11,10 +13,14 @@ public class BookService {
    * It continuously prompts the user for input until a valid option is selected.
    * The options include creating a book, showing all books, showing only available books, and exiting the program.
    */
-  public static void showOptions() {
+  public static void showOptions(User loggedUser) {
     while (true) {
       System.out.println("Choose an option:");
-      System.out.println("1 - Create a book");
+
+      if (loggedUser.getType() == UserType.EMPLOYEE) {
+        System.out.println("1 - Create a book");
+      }
+
       System.out.println("2 - Show all books");
       System.out.println("3 - Show only available books");
       System.out.println("4 - Exit");
@@ -27,7 +33,9 @@ public class BookService {
 
         switch (optionChosen) {
           case 1:
-            createBook();
+            if (loggedUser.getType() == UserType.EMPLOYEE) {
+              createBook();
+            }
             break;
           case 2:
             showSearchedBooks();

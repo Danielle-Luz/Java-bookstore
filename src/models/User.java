@@ -64,4 +64,8 @@ public class User {
   public String getUsername() {
     return this.username;
   }
+
+  public UserType getType() {
+    return this.type;
+  }
 }
